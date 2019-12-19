@@ -27,5 +27,7 @@ urlpatterns = [
     # ...
     path(r'xadmin/', xadmin.site.urls),
     path('user/', include('user.urls')),
+    path('club/', include('club.urls')),
+    path('home/', include('home.urls')),
     re_path('^media/(?P<path>.*)', serve, {'document_root': settings.MEDIA_ROOT}),
 ]

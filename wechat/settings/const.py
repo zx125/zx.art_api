@@ -1,7 +1,29 @@
-AppId="wxf6afa12dd1a39f35"
+# 后台http根路径
+# BASE_URL = 'http://127.0.0.1:8000'
 
-AppSecret="8170a21840b3663a11fbcc108d74a8ff"
+# 前台http根路径
+# LUFFY_URL = 'http://127.0.0.1:8080'
 
-code2Session="https://api.weixin.qq.com/sns/jscode2session?appid={}&secret={}&js_code={}&grant_type=authorization_code"
-pay_mchid ='1415981402'
-pay_apikey = 'xi34nu5jn7x2uujd8u4jiijd2u5d6j8e'
+# 后台http根路径
+BASE_URL = 'http://116.62.152.65:8000'
+
+# 前台http根路径
+LUFFY_URL = 'http://116.62.152.65:8080'
+
+# 订单支付成功的后台异步回调接口
+NOTIFY_URL = BASE_URL + '/order/success'
+
+# 订单支付成功的前台同步回调接口
+RETURN_URL = LUFFY_URL + '/pay/success'
+
+# 短信过期时间
+SMS_EXP = 300
+
+SMS_CACHE_KEY = 'sms_%s'
+
+# 轮播图推荐数
+BANNER_COUNT = 4
+
+
+# 后台http根路径
+IMG_BASE_URL = 'http://127.0.0.1:8000/media/'

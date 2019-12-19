@@ -5,6 +5,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     mobile = models.CharField(max_length=11, unique=True)
+    club = models.ForeignKey(to="club.Club",related_name="user", db_constraint=False, on_delete=models.DO_NOTHING, null=True)
     icon = models.ImageField(upload_to='icon', default='icon/default.png')
     class Meta:
         db_table = 'zx_user'
