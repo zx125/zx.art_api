@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'club',
     'user',
-
+    'car',
     'home',
     # xamin主体模块
     'xadmin',
@@ -213,3 +213,15 @@ CACHES = {
 
 #允许 跨域
 CORS_ORIGIN_ALLOW_ALL = True
+
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'utils.exception.exception_handler',
+    # 渲染模块的全局配置：开发一般只配置json,为了安全和保密技术
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'sms': '1/min',
+    }
+
+}
