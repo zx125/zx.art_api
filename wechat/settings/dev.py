@@ -220,8 +220,24 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
     ],
+    # 认证模块
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # jwt认证类
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ],
+    # 权限模块
+    'DEFAULT_PERMISSION_CLASSES': [
+        # 'rest_framework.permissions.IsAuthenticated',
+        # 自定义权限类
+    ],
     'DEFAULT_THROTTLE_RATES': {
         'sms': '1/min',
     }
 
+}
+
+
+import datetime
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
 }

@@ -1,14 +1,14 @@
-# 后台http根路径
-# BASE_URL = 'http://127.0.0.1:8000'
+#后台http根路径
+BASE_URL = 'http://127.0.0.1:8000'
 
-# 前台http根路径
-# LUFFY_URL = 'http://127.0.0.1:8080'
+#前台http根路径
+LUFFY_URL = 'http://127.0.0.1:8080'
 
-# 后台http根路径
-BASE_URL = 'http://116.62.152.65:8000'
-
-# 前台http根路径
-LUFFY_URL = 'http://116.62.152.65:8080'
+# # 后台http根路径
+# BASE_URL = 'http://116.62.152.65:8000'
+#
+# # 前台http根路径
+# LUFFY_URL = 'http://116.62.152.65:8080'
 
 # 订单支付成功的后台异步回调接口
 NOTIFY_URL = BASE_URL + '/order/success'

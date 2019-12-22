@@ -24,8 +24,10 @@ class Order(models.Model):
     status_choices = (("active", '活动订单'), ("dead", '作废订单'), ("finish", '已完成订单'))
     pay_status_choices = ((0, '未付款'), (1, '已付款'))
     ship_status_choices = ((0, '未发货'), (1, '已发货'))
-
-    order_id = models.CharField(max_length=50, unique=True, primary_key=True)
+    out_trade_no = models.CharField(max_length=64, verbose_name="订单号", unique=True)
+    trade_no = models.CharField(max_length=64, null=True, verbose_name="流水号")
+    car = models.OneToOneField(to="Car", related_name="Order",db_constraint=False,on_delete=models.CASCADE)
+    order_id = models.AutoField(max_length=50, unique=True, primary_key=True)
     status = models.CharField(choices=status_choices, default="active", max_length=50)
     pay_status = models.SmallIntegerField(choices=pay_status_choices, default=0)
     #以支付金额
@@ -35,7 +37,7 @@ class Order(models.Model):
     pay_app = models.CharField(max_length=100)
     user = models.ForeignKey(to="user.User", related_name="Order", db_constraint=False,on_delete=models.CASCADE)
     #数量
-    quantity = models.IntegerField(default=0)
+    quantity = models.IntegerField(default=1)
     #备忘录
     memo = models.CharField(max_length=200, default=0)
     consignee_name = models.CharField(max_length=200, default=0)
@@ -66,6 +68,7 @@ class Car_detail(BaseModel):
     oil = models.DecimalField(max_digits=3,decimal_places=2,verbose_name="油耗")
     url = models.CharField(max_length=50,verbose_name="视频链接")
     quality = models.IntegerField("质保/月")
+
     def __str__(self):
         return self.id
 
@@ -92,6 +95,14 @@ class Car(BaseModel):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     stock = models.OneToOneField(to="Stock",db_constraint=False,on_delete=models.DO_NOTHING)
     detail = models.OneToOneField(to="Car_detail",db_constraint=False,on_delete=models.CASCADE)
+
+    @property
+    def ima_url(self):
+        return f"{settings.IMG_BASE_URL}/{self.image.image_url}"
+
+    @property
+    def car_type(self):
+        return self.get_type_display()
 
     def __str__(self):
         return self.name
