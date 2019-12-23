@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'club',
     'user',
+    'django_filters',
+    'blog',
     'car',
     'home',
     # xamin主体模块
