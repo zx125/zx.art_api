@@ -11,4 +11,5 @@ urlpatterns = [
     path('sms', views.SMSAPIView.as_view()),
     # 手机注册验证
     path('mobile', views.MobileAPIView.as_view()),
+    path('vip', views.VipAPIView.as_view()),
 ]

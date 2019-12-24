@@ -15,6 +15,7 @@ NOTIFY_URL = BASE_URL + '/order/success'
 
 # 订单支付成功的前台同步回调接口
 RETURN_URL = LUFFY_URL + '/pay/success'
+RETURN_URL2 = LUFFY_URL + '/pay/success_club'
 
 # 短信过期时间
 SMS_EXP = 300

@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView,GenericAPIView
 from rest_framework.filters import OrderingFilter, SearchFilter
 from . import serializers
+from rest_framework import mixins
 # from .filters import BlogFilterSet
 from . import models
 # 分类筛选：django-filter：filter_backends配置DjangoFilterBackend，再在filter_fields中配置分组筛选的字段
@@ -26,6 +27,8 @@ class ArtListAPIView(ListAPIView):
 
     # 分页器
     # pagination_class = CoursePageNumberPagination
+    def post(self,request,*args,**kwargs):
+        print(request)
 
 class ArtCatListAPIView(ListAPIView):
     queryset = models.Category.objects.filter().all()
@@ -34,3 +37,11 @@ class ArtCatListAPIView(ListAPIView):
 class ArtTabListAPIView(ListAPIView):
     queryset = models.Tag.objects.filter().all()
     serializer_class = serializers.ArtTabModelSerializer
+
+
+class ArtDetailListAPIView(mixins.ListModelMixin,GenericAPIView):
+    queryset = models.Article.objects.all()
+    serializer_class = serializers.ArtDetailSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)

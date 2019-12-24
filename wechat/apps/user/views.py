@@ -3,6 +3,8 @@ import re
 from rest_framework.views import APIView
 from utils.response import APIResponse
 from django.conf import settings
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from . import models,serializers,throttles
 from django.core.cache import cache
 from libs import tx_sms
@@ -13,8 +15,11 @@ class LoginAPIView(APIView):
     def post(self,request,*args,**kwargs):
         serializer = serializers.LoginModelSerializer(data=request.data)
         if serializer.is_valid():
+
+            username = serializer.user.username
+
             return APIResponse(data={
-                'username':serializer.user.username,
+                'username':username,
                 'token':serializer.token
             })
         return APIResponse(1,'failed',data=serializer.errors,http_status=400)
@@ -50,12 +55,13 @@ class LoginMobileAPIView(APIView):
     def post(self,request,*args,**kwargs):
         serializer = serializers.LoginMobileSerializer(data=request.data)
         if serializer.is_valid():
-            return APIResponse(
-                data = {
-                    'username':serializer.user.username,
-                    'token':serializer.token
-                }
-            )
+
+            username = serializer.user.username
+
+            return APIResponse(data={
+                'username':username,
+                'token':serializer.token
+            })
         return APIResponse(1,'failed',data = serializer.errors,http_status=400)
 
 
@@ -89,3 +95,20 @@ class MobileAPIView(APIView):
             return APIResponse(1,'手机号已注册')
         except:
             return APIResponse(0,'手机未注册')
+
+class VipAPIView(APIView):
+    #jwt
+    authentication_classes = [JSONWebTokenAuthentication]
+    #登录用户才可以访问
+    permission_class = [IsAuthenticated]
+    def get(self,request,*args,**kwargs):
+        try:
+            request.user.club
+            return APIResponse(
+                results="会员VIP"
+            )
+        except:
+            return APIResponse(
+                results="普通用户"
+            )
+

@@ -21,3 +21,9 @@ class ArtTabModelSerializer(ModelSerializer):
     class Meta:
         model = models.Category
         fields = ('id','name')
+
+class ArtDetailSerializer(ModelSerializer):
+    class Meta:
+        model = models.Article
+        fields = '__all__'
+        depth = 1
