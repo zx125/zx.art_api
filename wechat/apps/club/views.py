@@ -35,7 +35,6 @@ class DetailAPIView(APIView):
         data = request.query_params.dict()
         club = models.Club.objects.filter(pk=data['id']).first()
         club_data = serializers.ClubDataSerializer(club).data
-
         return APIResponse(
             results=club_data
         )

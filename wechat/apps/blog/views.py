@@ -1,6 +1,10 @@
 from django.shortcuts import render
-from rest_framework.generics import ListAPIView,GenericAPIView
+from rest_framework.generics import ListAPIView,GenericAPIView,RetrieveAPIView
+from rest_framework.response import Response
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 from . import serializers
 from rest_framework import mixins
 # from .filters import BlogFilterSet
@@ -39,9 +43,42 @@ class ArtTabListAPIView(ListAPIView):
     serializer_class = serializers.ArtTabModelSerializer
 
 
-class ArtDetailListAPIView(mixins.ListModelMixin,GenericAPIView):
+class ArtDetailListAPIView(RetrieveAPIView):
     queryset = models.Article.objects.all()
     serializer_class = serializers.ArtDetailSerializer
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+class ArtComListAPIView(ListAPIView):
+    #jwt
+    authentication_classes = [JSONWebTokenAuthentication]
+    #登录用户才可以访问
+    permission_class = [IsAuthenticated]
+
+    queryset = models.Comment.objects.filter(parent=1).all()
+    serializer_class = serializers.ArtComSerializer
+
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ('article',)
+    def post(self,request,*args,**kwargs):
+        data = request.data
+        data['user'] = request.user.id
+        print(data)
+        com_ser = serializers.ComSerializer(data=data)
+        if com_ser.is_valid():
+            com = com_ser.save()
+        else:
+            print(com_ser.errors)
+
+        return Response(b"ok")
+
+class up_down(APIView):
+    #jwt
+    authentication_classes = [JSONWebTokenAuthentication]
+    #登录用户才可以访问
+    permission_class = [IsAuthenticated]
+    def get(self,request,*args,**kwargs):
+        user_id = request.user.id
+        data = request.query_params.dict()
+        print(user_id)
+        print(data)
+        return Response('ok')
+

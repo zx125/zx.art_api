@@ -41,6 +41,7 @@ class Article(BaseModel):
         from django.conf import settings
         return f"{settings.IMG_BASE_URL}/{self.user.icon}"
 
+
     @property
     def use_name(self):
         return self.user.username
@@ -64,4 +65,23 @@ class Comment(models.Model):
     article = models.ForeignKey(to='Article',db_constraint=False,on_delete=models.DO_NOTHING)
     content = models.CharField(max_length=255)
     create_time = models.DateTimeField(auto_now_add=True)
-    parent = models.ForeignKey(to='self', null=True,db_constraint=False,on_delete=models.DO_NOTHING)
+    parent = models.ForeignKey(to='self',related_name="haha",db_constraint=False,on_delete=models.DO_NOTHING)
+
+    @property
+    def user_name(self):
+        return self.user.username
+
+    # @property
+    # def data(self):
+    #     temp_com_list = []
+    #     for com in self.parent.all():
+    #         temp_com_list.append({
+    #             'name': com.name,
+    #             'sex': com.get_sex_display(),
+    #             'mobile': com.detail.mobile
+    #         })
+    #     return temp_com_list
+
+    @property
+    def zx_time(self):
+        return self.create_time.strftime("%Y-%m-%d %H:%M")
