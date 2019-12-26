@@ -100,7 +100,7 @@ class VipAPIView(APIView):
     #jwt
     authentication_classes = [JSONWebTokenAuthentication]
     #登录用户才可以访问
-    permission_class = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     def get(self,request,*args,**kwargs):
         try:
             request.user.club

@@ -36,14 +36,13 @@ class CatBannerListAPIView(ListAPIView):
     queryset = models.Car.objects.filter().all()[:3]
     serializer_class = serializers.CarBannerModelSerializer
 
-class CarOrderBannerListAPIView(APIView):
+
+
+class PayAPIView(APIView):
     #jwt
     authentication_classes = [JSONWebTokenAuthentication]
     #登录用户才可以访问
-    permission_class = [IsAuthenticated]
-
-class PayAPIView(APIView):
-
+    permission_classes = [IsAuthenticated]
     def post(self,request,*args,**kwargs):
         serializer = serializers.OrderModelSerializer(data=request.data,context={'request':request})
         # 信息校验

@@ -225,7 +225,7 @@ REST_FRAMEWORK = {
     # 认证模块
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # jwt认证类
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ],
     # 权限模块
     'DEFAULT_PERMISSION_CLASSES': [

@@ -52,6 +52,7 @@ class OrderModelSerializer(ModelSerializer):
 
         # 视图类给序列化类传参
         attrs['user'] = self.context.get('request').user
+        print("1111")
         # 代表校验通过
         return attrs
 

@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import F,Q
+from user.models import User
 from rest_framework.views import APIView
 from . import serializers
 from rest_framework import mixins
@@ -50,8 +52,6 @@ class ArtDetailListAPIView(RetrieveAPIView):
 class ArtComListAPIView(ListAPIView):
     #jwt
     authentication_classes = [JSONWebTokenAuthentication]
-    #登录用户才可以访问
-    permission_class = [IsAuthenticated]
 
     queryset = models.Comment.objects.filter(parent=1).all()
     serializer_class = serializers.ArtComSerializer
@@ -59,6 +59,7 @@ class ArtComListAPIView(ListAPIView):
     filter_backends = [DjangoFilterBackend]
     filter_fields = ('article',)
     def post(self,request,*args,**kwargs):
+
         data = request.data
         data['user'] = request.user.id
         print(data)
@@ -74,11 +75,38 @@ class up_down(APIView):
     #jwt
     authentication_classes = [JSONWebTokenAuthentication]
     #登录用户才可以访问
-    permission_class = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     def get(self,request,*args,**kwargs):
         user_id = request.user.id
         data = request.query_params.dict()
         print(user_id)
         print(data)
+        click = int(data['click'])
+        print(click)
+        da = models.UpAndDown.objects.filter(article=data['art'],user=user_id).first()
+        if da:
+            if da.is_up:
+                print("点赞")
+                models.UpAndDown.objects.filter(article=data['art'], user=user_id).delete()
+                models.Article.objects.filter(pk=data['art']).update(up_num=F('up_num')-1)
+            else:
+                print("点踩")
+                models.UpAndDown.objects.filter(article=data['art'], user=user_id).delete()
+                models.Article.objects.filter(pk=data['art']).update(down_num=F('down_num')-1)
+        else:
+            if click:
+                art = models.Article.objects.filter(id=data['art']).first()
+                user = User.objects.filter(id=user_id).first()
+                models.UpAndDown.objects.create(article=art, user=user, is_up=True)
+                models.Article.objects.filter(pk=data['art']).update(up_num=F('up_num') + 1)
+            else:
+                art = models.Article.objects.filter(id=data['art']).first()
+                user = User.objects.filter(id=user_id).first()
+                models.UpAndDown.objects.create(article=art, user=user, is_up=False)
+                models.Article.objects.filter(pk=data['art']).update(down_num=F('down_num') + 1)
+
+
+
+
         return Response('ok')
 

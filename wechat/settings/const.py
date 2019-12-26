@@ -1,14 +1,19 @@
 #后台http根路径
-BASE_URL = 'http://127.0.0.1:8000'
+# BASE_URL = 'http://127.0.0.1:8000'
+BASE_URL = 'http://116.62.152.65:8000'
 
 #前台http根路径
-LUFFY_URL = 'http://127.0.0.1:8080'
+# LUFFY_URL = 'http://127.0.0.1:8080'
+LUFFY_URL = 'http://116.62.152.65:8080'
+
+# IMG_BASE_URL = 'http://127.0.0.1:8000/media/'
+IMG_BASE_URL = 'http://116.62.152.65:8000/media/'
 
 # # 后台http根路径
-# BASE_URL = 'http://116.62.152.65:8000'
+
 #
 # # 前台http根路径
-# LUFFY_URL = 'http://116.62.152.65:8080'
+
 
 # 订单支付成功的后台异步回调接口
 NOTIFY_URL = BASE_URL + '/order/success'
@@ -27,4 +32,4 @@ BANNER_COUNT = 4
 
 
 # 后台http根路径
-IMG_BASE_URL = 'http://127.0.0.1:8000/media/'
+

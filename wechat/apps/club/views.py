@@ -20,12 +20,16 @@ class ClubListAPIView(ListAPIView):
     pagination_class = ClubePageNumberPagination
 
 class PayAPIView(APIView):
-
+    #jwt
+    authentication_classes = [JSONWebTokenAuthentication]
+    #登录用户才可以访问
+    permission_classes = [IsAuthenticated]
     def post(self,request,*args,**kwargs):
         serializer = serializers.OrderModelSerializer(data=request.data,context={'request':request})
         # 信息校验
         serializer.is_valid(raise_exception=True)
         # 订单入库
+        print(222)
         serializer.save()
         # 返回一个支付链接
         return Response(serializer.pay_url)
@@ -43,7 +47,7 @@ class SuccessAPIView(APIView):
     #jwt
     authentication_classes = [JSONWebTokenAuthentication]
     #登录用户才可以访问
-    permission_class = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     def patch(self,request,*args,**kwargs):
         data = request.query_params.dict()
         order_id = data['out_trade_no']

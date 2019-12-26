@@ -55,6 +55,7 @@ class OrderModelSerializer(ModelSerializer):
         attrs['out_trade_no'] = order_on
 
         # 视图类给序列化类传参
+        print(self.context.get('request').user)
         attrs['user'] = self.context.get('request').user
         # 代表校验通过
         return attrs
